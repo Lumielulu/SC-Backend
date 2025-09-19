@@ -55,8 +55,8 @@ def get_songs(request):
     data = [{
         'id': song.id,
         'name': song.titulo,
-        'url': song.song_url,
-        'image_url': song.image_url, 
+        'url': request.build_absolute_uri(song.audio_file.url),
+        'image_url': request.build_absolute_uri(song.image_file.url), 
     } for song in songs]
     return JsonResponse(data, safe= False)
 
