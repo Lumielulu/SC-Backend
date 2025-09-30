@@ -24,3 +24,17 @@ class Song(models.Model):
         if self.audio_file:
             return self.audio_file.url
         return ''
+
+
+class User(models.Model):
+    image_file = models.FileField(upload_to='profile_picture/',default='')
+    username = models.CharField(max_length=20, default='', primary_key=True)
+    password = models.CharField(max_length=12, default='', null=False)
+    email = models.EmailField(max_length=254)
+    @property
+    def profile_image_url(self):
+        if self.image_file:
+            return self.image_file.url
+        
+    def __str__(self):
+        return self.image_file or self.username or self.email

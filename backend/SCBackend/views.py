@@ -9,7 +9,6 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 
-
 @csrf_exempt
 @require_http_methods(['POST'])
 def test_angular(request):
@@ -60,3 +59,17 @@ def get_songs(request):
     } for song in songs]
     return JsonResponse(data, safe= False)
 
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def user_register(request):
+    user_data = request.body
+    if user_data:
+        try:
+            User.objects.create(username = user_data.username,
+                                password = user_data.password,
+                                email = user_data.email,
+                                image_file = user_data.image)
+            return JsonResponse({'success':True}, safe=False)
+        except Exception as e:
+            return JsonResponse({'message': f'error al crear el usuario: {e}', 'success':False})
