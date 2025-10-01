@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework_simplejwt',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,6 +94,22 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ]
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT= {
+    'ACCESS_TOKEN_LIFESPAN':timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFESPAN': timedelta(days=1)
+
+}
+
+AUTH_USER_MODEL = 'SCBackend.CustomUser'
 
 
 # Password validation

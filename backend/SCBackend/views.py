@@ -1,12 +1,28 @@
 #api 
+from rest_framework import generics
 import json
 import os
+from .serializers import UserSerializer
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.http import JsonResponse,FileResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            "profile_image": user.image_file.url if user.image_file else None,
+        })
 
 
 @csrf_exempt
@@ -60,16 +76,10 @@ def get_songs(request):
     return JsonResponse(data, safe= False)
 
 
-@csrf_exempt
+
+
+
+
 @require_http_methods(['POST'])
-def user_register(request):
-    user_data = request.body
-    if user_data:
-        try:
-            User.objects.create(username = user_data.username,
-                                password = user_data.password,
-                                email = user_data.email,
-                                image_file = user_data.image)
-            return JsonResponse({'success':True}, safe=False)
-        except Exception as e:
-            return JsonResponse({'message': f'error al crear el usuario: {e}', 'success':False})
+class RegisterView(generics.CreateAPIView):
+    serializer_class = UserSerializer
