@@ -104,8 +104,10 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT= {
-    'ACCESS_TOKEN_LIFESPAN':timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFESPAN': timedelta(days=1)
+    'ACCESS_TOKEN_LIFESPAN':timedelta(minutes=5),       #tokens para acceder a funciones de la api
+    'REFRESH_TOKEN_LIFESPAN': timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,                  # genera nuevo refresh al usarlo
+    "BLACKLIST_AFTER_ROTATION": True,               #coloca en lista para no volverse a usar
 
 }
 

@@ -1,4 +1,5 @@
 #api 
+from rest_framework.decorators import api_view
 from rest_framework import generics
 import json
 import os
@@ -13,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
+@require_http_methods(['GET'])
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -77,9 +80,27 @@ def get_songs(request):
 
 
 
-
-
-
 @require_http_methods(['POST'])
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def regUser(request):
+    data = request.body
+    user = User.objects.create(
+        name= data.name,
+        password = data.password,
+        email = data.email,
+    )
+    c_user = CustomUser.objects.create(data.user_image)
+    user.save()
+    c_user.save()
+
+
+@api_view(['GET'])
+def getUsers(request):
+    users = CustomUser.objects.all() 
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)

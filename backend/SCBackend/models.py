@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -29,8 +30,12 @@ class Song(models.Model):
 class CustomUser(AbstractUser):
     image_file = models.FileField(upload_to='profile_pictures/', blank=True)
 
+    #ruta fisica de la imagen, esta es la que se usa para obtenerlas desde la S3
     @property
     def profile_image_url(self):
         if self.image_file:
             return self.image_file.url
         return ''
+
+    def __str__(self):
+        return self.profile_image_url
