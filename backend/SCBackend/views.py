@@ -88,19 +88,24 @@ class RegisterView(generics.CreateAPIView):
 @csrf_exempt
 @require_http_methods(['POST'])
 def regUser(request):
-    data = request.body
-    user = User.objects.create(
-        name= data.name,
-        password = data.password,
-        email = data.email,
-    )
-    c_user = CustomUser.objects.create(data.user_image)
-    user.save()
-    c_user.save()
+    data = json.loads(request.body)
+    if data:
+        try:
+            user = User.objects.create(
+                username= data.username,
+                password = data.password,
+            )
+            c_user = CustomUser.objects.create(data.user_image)
+            user.save()
+            c_user.save()
+        except Exception as e:
+            return JsonResponse({'success': False})
+
 
 
 @api_view(['GET'])
 def getUsers(request):
-    users = CustomUser.objects.all() 
+    data = json.loads(request.body)
+    users = CustomUser.objects.get(id = data.id) 
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)

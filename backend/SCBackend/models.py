@@ -28,7 +28,7 @@ class Song(models.Model):
 
 
 class CustomUser(AbstractUser):
-    image_file = models.FileField(upload_to='profile_pictures/', blank=True)
+    image_file = models.FileField(upload_to='profile_pictures/', blank=True, null=True)
 
     #ruta fisica de la imagen, esta es la que se usa para obtenerlas desde la S3
     @property
