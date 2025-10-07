@@ -88,18 +88,19 @@ class RegisterView(generics.CreateAPIView):
 @csrf_exempt
 @require_http_methods(['POST'])
 def regUser(request):
-    data = json.loads(request.body)
-    if data:
-        try:
-            user = User.objects.create(
-                username= data.username,
-                password = data.password,
-            )
-            c_user = CustomUser.objects.create(data.user_image)
-            user.save()
-            c_user.save()
-        except Exception as e:
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        #image_file = data.get('profile_picture') #opcional
+        if not username or not password:
             return JsonResponse({'success': False})
+        
+        user = CustomUser.objects.create_user(username = username , password=password)
+
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return  JsonResponse({'success':False})
 
 
 
