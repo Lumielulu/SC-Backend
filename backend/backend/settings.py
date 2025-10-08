@@ -11,22 +11,23 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(dotenv_path=(BASE_DIR.parent.parent  / '.mikufile'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3vmrecblq^78$xamb$89kk8o_fx9w0b%gute(w&fhdljsq+!yc'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [f'{os.getenv('HOST')}']
 
 
 # Application definition
@@ -34,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'SCBackend',
-    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+#    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -60,11 +61,18 @@ CORS_ALLOWED_ORIGIN = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+#*
+#
+# 
+# CSRF_TRUSTED_ORIGINS = [
+#    "http://localhost:8100",
+#   "http://127.0.0.1:8100",
+#    ]
+# 
+#  
+# *
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8100",
-    "http://127.0.0.1:8100",
-]
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -95,6 +103,10 @@ DATABASES = {
     }
 }
 
+
+#*
+# uso de jwt como autenticacion
+# #
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':[
         'rest_framework_simplejwt.authentication.JWTAuthentication'
@@ -102,7 +114,7 @@ REST_FRAMEWORK = {
 }
 
 from datetime import timedelta
-
+#definicion de tokens y sus duraciones
 SIMPLE_JWT= {
     'ACCESS_TOKEN_LIFESPAN':timedelta(minutes=5),       #tokens para acceder a funciones de la api
     'REFRESH_TOKEN_LIFESPAN': timedelta(days=1),
@@ -111,6 +123,8 @@ SIMPLE_JWT= {
 
 }
 
+
+#abstraccion del modelo de usuario para poder modelarlo para cumplir necesidades del proyecto
 AUTH_USER_MODEL = 'SCBackend.CustomUser'
 
 
