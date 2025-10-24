@@ -60,8 +60,6 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8100",  # desarrollo web Ionic
-    "http://127.0.0.1:8100",  # alternativa
-    "capacitor://localhost",  # app Android/iOS con Capacitor
     "http://balanceador-1719586101.us-east-1.elb.amazonaws.com",  # el ALB
 ]
 CORS_ALLOW_HEADERS = [
