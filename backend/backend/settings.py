@@ -56,11 +56,34 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = False
+
 CORS_ALLOWED_ORIGINS = [
-    'http://54.227.184.251',
+    "http://localhost:8100",  # desarrollo web Ionic
+    "http://127.0.0.1:8100",  # alternativa
+    "capacitor://localhost",  # app Android/iOS con Capacitor
+    "http://balanceador-1719586101.us-east-1.elb.amazonaws.com",  # el ALB
+]
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "accept",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 #*
 #
 # 
