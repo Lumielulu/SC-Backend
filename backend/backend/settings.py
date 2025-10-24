@@ -59,7 +59,8 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8100",  # desarrollo web Ionic
+    "http://localhost",  # desarrollo android
+    "http://localhost:8100/",  # desarrollo web Ionic
     "http://balanceador-1719586101.us-east-1.elb.amazonaws.com",  # el ALB
 ]
 CORS_ALLOW_HEADERS = [
