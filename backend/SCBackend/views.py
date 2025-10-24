@@ -110,3 +110,23 @@ def getUsers(request):
     users = CustomUser.objects.get(id = data.id) 
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+def downloadRequestedSong(request, song_id):
+    song = get_object_or_404(Song, id = song_id)
+    file_path = song.audio_file.path
+
+    if not os.path.exists(file_path):
+        return JsonResponse({'success':False, 'message':'Error al obtener la ubicacion del archivo'},status = 404)
+    try:
+        with open(file_path, 'rb') as f:
+            response = FileResponse(f, as_attachment=True, filename=song.titulo)
+            return response
+    except Exception:
+        return JsonResponse({'success':False, 'message': 'Error para descargar el archivo'}, status = 500)
+    
+@api_view(['GET'])
+def health(request):
+    return HttpResponse(status =200)
