@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework import generics
 import json
 import os
+import urllib.parse
 from .serializers import UserSerializer
 from .models import *
 from django.shortcuts import get_object_or_404
@@ -121,8 +122,9 @@ def downloadRequestedSong(request, song_id):
     if not os.path.exists(file_path):
         return JsonResponse({'success':False, 'message':'Error al obtener la ubicacion del archivo'},status = 404)
     try:
-        with open(file_path, 'rb') as f:
-            response = FileResponse(f, as_attachment=True, filename=song.titulo)
+            response = FileResponse(open(file_path, 'rb'),as_attachment=True, filename=urllib.parse.quote(f'{song.titulo}.mp3'))
+            response["Access-Control-Allow-Origin"] = "*"
+            response["Access-Control-Expose-Headers"] = "Content-Disposition"
             return response
     except Exception:
         return JsonResponse({'success':False, 'message': 'Error para descargar el archivo'}, status = 500)
