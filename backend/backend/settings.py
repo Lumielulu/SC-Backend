@@ -59,9 +59,9 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
-    "http://SoundStar-1491080196.us-east-1.elb.amazonaws.com" #nuevo ALB
-    "http://localhost",  # desarrollo android
-    "http://localhost:8100/",  # desarrollo web Ionic
+    "soundStar-1491080196.us-east-1.elb.amazonaws.com" #nuevo ALB
+    "localhost",  # desarrollo android
+    "localhost:8100/",  # desarrollo web Ionic
 ]
 CORS_ALLOW_HEADERS = [
     "authorization",
