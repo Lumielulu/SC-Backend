@@ -4,4 +4,5 @@ djangorestframework
 djangorestframework_simplejwt
 dotenv
 gunicorn
-install psycopg2-binary
+psycopg2-binary
+django-storages boto3
