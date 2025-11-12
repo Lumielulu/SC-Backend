@@ -8,7 +8,7 @@ import tempfile
 import subprocess
 from pathlib import Path
 from typing import Iterable
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.backend.settings')
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.db import transaction
