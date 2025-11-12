@@ -11,6 +11,6 @@ urlpatterns = [
     path('songs/', views.get_songs, name='get_songs'),
     path('users/', views.getUsers, name='users'),
     path('register/', views.regUser, name='regUser'),
-    path('download/<int:song_id>', views.downloadRequestedSong, name='downloadRequestedSong'),
+    #path('download/<int:song_id>', views.downloadRequestedSong, name='downloadRequestedSong'),
     path('health/', views.health, name="health")
 ]
