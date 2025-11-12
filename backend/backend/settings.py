@@ -64,11 +64,6 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = [
-
-
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL', 'postgres://user:password@host:port/dbname'),
      
     "authorization",
     "content-type",
@@ -123,8 +118,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
     #*
     # 'ENGINE': 'django.db.backends.postgresql',
     #    'NAME': os.getenv("DB_NAME"),
@@ -135,14 +128,13 @@ DATABASES = {
     #}
 
 
-
-    DATABASES = {
+DATABASES = {
         'default': dj_database_url.config(
             default=os.environ.get('DATABASE_URL'),
             conn_max_age=600
         )
-    }
 }
+
 
 
 #*
