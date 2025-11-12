@@ -13,7 +13,7 @@ from django.db import transaction
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 
-from SCBackend.models import Song, AudioVariant
+from models import Song, AudioVariant
 
 
 def run(cmd: list[str]):
