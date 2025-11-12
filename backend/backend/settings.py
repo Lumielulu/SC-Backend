@@ -194,7 +194,7 @@ STATIC_URL = f'https://sondstar-musics.s3.amazonaws.com/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #Media files (songs)
-MEDIA_URL = f'https://soundstar-music.s3.amazonaws.com/media/'
+MEDIA_URL = f'https://soundstar-musics.s3.amazonaws.com/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
