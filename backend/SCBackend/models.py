@@ -11,8 +11,8 @@ class Artista(models.Model):
         return self.nombre_artista
 
 class Song(models.Model):
-    audio_file = models.FileField(upload_to='tracks/', default='')
-    image_file = models.FileField(upload_to='image/',default='')
+    audio_file = models.FileField(upload_to='media/tracks/', default='')
+    image_file = models.FileField(upload_to='media/image/',default='')
     titulo = models.CharField(max_length=100)
     duracion = models.PositiveIntegerField()
 
