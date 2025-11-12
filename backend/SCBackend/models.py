@@ -11,14 +11,26 @@ class Artista(models.Model):
         return self.nombre_artista
 
 class Song(models.Model):
-    audio_file = models.FileField(upload_to='songs/', default='')
     image_file = models.FileField(upload_to='image/',default='')
     titulo = models.CharField(max_length=100)
     duracion = models.PositiveIntegerField()
 
+    #creacion de campos para hls
+    hls_prefix = models.CharField(
+        max_length=255, blank=True, default='',
+        help_text="Prefijo S3 p.ej. tracks/<uuid>/ (donde viven master.m3u8 y variantes)"
+    )
+    published = models.BooleanField(default=False)
+
+    def master_key(self):
+        return f"{self.hls_prefix.rstrip('/')}/master.m3u8" if self.hls_prefix else ""
 
     def __str__(self):
-        return self.titulo or self.song_url or self.image_url
+        return self.titulo
+
+
+    def __str__(self):
+        return self.image_url if self.image_file else ''
     
     #guarda la ruta fisica!
     @property
@@ -26,13 +38,18 @@ class Song(models.Model):
         if self.image_file:
             return self.image_file.url
         return ''
-    
-    #guarda la ruta fisica!
-    @property
-    def song_url(self):
-        if self.audio_file:
-            return self.audio_file.url
-        return ''
+
+class AudioVariant(models.Model):
+    song = models.ForeignKey(Song, on_delete=models.CASCADE, related_name="variants")
+    abr_kbps = models.PositiveSmallIntegerField()  # 64/96/128
+    codec = models.CharField(max_length=20, default="aac_lc")
+    sample_rate = models.PositiveIntegerField(default=48000)
+    channels = models.PositiveSmallIntegerField(default=2)
+    is_published = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ("song", "abr_kbps")
+        indexes = [models.Index(fields=["song", "abr_kbps", "is_published"])]
 
 
 class ArtistaAlbum (models.Model):
