@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(dotenv_path=(BASE_DIR.parent / '.mikufile'))
@@ -64,6 +64,12 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = [
+
+
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL', 'postgres://user:password@host:port/dbname'),
+     
     "authorization",
     "content-type",
     "accept",
@@ -119,13 +125,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+    #*
+    # 'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': os.getenv("DB_NAME"),
+    #    'USER': os.getenv("DB_USER"),
+     #   'PASSWORD': os.getenv("DB_PASSWORD"),
+     #   'HOST': os.getenv("DB_HOST"),
+     #   'PORT': os.getenv("DB_PORT"),
+    #}
+
+
+
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
 }
 
