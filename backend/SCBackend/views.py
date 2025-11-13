@@ -38,8 +38,8 @@ def get_songs(request):
     data = [{
         'id': song.id,
         'name': song.titulo,
-        'url': request.build_absolute_uri(song.audio_file.url),
-        'image_url': request.build_absolute_uri(song.image_file.url), 
+        'url': song.audio_file.url,
+        'image_url': song.image_file.url if song.image_file else None
     } for song in songs]
     return JsonResponse(data, safe= False)
 
@@ -106,29 +106,6 @@ def health(request):
 def streaming(request, song_id):
     #preparamos la URL del archivo para el streaming
     song = get_object_or_404(Song, id=song_id)
-
-    
-    #obtenemos la ruta FISICA de la cancion guardada, no la relativa!!!
-    file_path =song.audio_file.path
-
-    #validamos su existencia
-    if not os.path.exists(file_path):
-        return HttpResponse(status = 404)
-    
-    #preparamos el archivo mediante la funcion de fileresponse, primero abrimos el archivo, luego lo leemos y asignamos su tipo de contenido
-    response = FileResponse(open(file_path,'rb'), content_type = 'audio/mpeg')
-    
-    #le asignamos el tipo de rango aceptado por el navegador
-    response['Accept-Ranges'] = 'bytes'
-
-    #devolvemos el audio con los bytes solicitados
-    return response
-
-
-@api_view(['GET'])
-def stream_master(request, song_id: int):
-    #preparamos la URL del master.m3u8 para el streaming HLS
-    song = get_object_or_404(Song, id=song_id, published=True)
-    if not song.hls_prefix:
-        return Response({"detail": "Track no preparado en HLS."}, status=409)
-    return redirect(sign_s3_path(song.master_key()))  # 302 al master.m3u8
+    return JsonResponse({
+        'streaming_url': song.audio_file.url
+    })
